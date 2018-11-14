@@ -1,0 +1,89 @@
+body {
+  background: url(https://cdn.pixabay.com/photo/2017/08/18/16/54/darkness-2655645_960_720.jpg);
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.box {
+  border: solid 1px black;
+  width: 10%;
+  height: 100%;
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.ui.large.form {
+  display: none;
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 16%;
+}
+
+.ui.small.form {
+  width: 25%;
+  border: solid 1px black;
+  position: fixed;
+  bottom: 0%;
+  left: 0%;
+}
+
+.ui.large.button {
+  padding-top: 1%;
+  padding-bottom: 5%;
+  width: 100%;
+  text-align: center;
+}
+
+.plus.icon {
+  font-size: 25px;
+  position: absolute;
+  top: 43%;
+  right: 92%;
+}
+
+.edit.icon {
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  right: -20%;
+}
+
+.anchorText {
+  text-overflow: ellipsis;
+  position: relative;
+  top: 43%
+}
+
+#weather {
+  border: solid 0.5px black;
+  position: fixed;
+  top: 0%;
+  right: 0%;
+  font-size: 20px;
+}
+
+#today {
+  border: solid 0.5px black;
+  position: fixed;
+  bottom: 0%;
+  right: 0%;
+  font-size: 18px;
+}
+
+#favorite {
+  border: solid 1px black;
+  position: absolute;
+  top: -10%;
+  width: 85%;
+  height: 22%;
+  padding: 1%;
+  margin: 7%;
+}
+
+#picSearch {
+  width: 50%;
+}
