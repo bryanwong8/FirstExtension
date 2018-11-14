@@ -2,13 +2,13 @@
   "version": "1.0",
   "manifest_version": 2,
   "name": "First Extension",
-  "icons": {"128": "Air.png"},
+  "icons": {"128": "Photos/Air.png"},
   "permissions": [
     "geolocation",
-    "storage"              
+    "storage"
   ],
   "browser_action": {
-    "default_icon": "Fire.png",
+    "default_icon": "Photos/Fire.png",
     "default_popup": "popup.html",
     "default_title": "Xecute"
   },
