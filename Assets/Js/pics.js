@@ -6,13 +6,22 @@ function getBackground(){
   let bodyStyle = window.getComputedStyle(document.body, null);
   let night = document.getElementById("night");
   let day = document.getElementById("day");
+  let author = document.getElementById("author");
 
-  chrome.storage.sync.get("cover", (cover) => {
-    document.body.style.backgroundImage = cover.cover;
+  chrome.storage.sync.get("cover", (response) => {
+    document.body.style.backgroundImage = response.cover;
   });
 
-  chrome.storage.sync.get("textColor", (textColor) => {
-    document.body.style.color = textColor.textColor;
+  chrome.storage.sync.get("text", (response) => {
+    author.text = response.text;
+  });
+
+  chrome.storage.sync.get("link", (response) => {
+    author.href = response.link;
+  });
+
+  chrome.storage.sync.get("textColor", (response) => {
+    document.body.style.color = response.textColor;
   });
 
   night.addEventListener("click", () => {
@@ -41,13 +50,21 @@ function getBackground(){
         }
       })
       .then((response) =>{
+        console.log(response);
         let imageLength = response.data.results.length;
         let randomNum = Math.floor(Math.random() * imageLength);
         let image = response.data.results[randomNum].urls.regular;
+        let first = response.data.results[randomNum].user.first_name;
+        let last = response.data.results[randomNum].user.last_name;
+        let home_page = response.data.results[randomNum].links.html;
+
+        author.textContent = "Photo by " + first + " " + last + " on Unsplash";
+        author.href = home_page;
 
         document.body.style.backgroundImage = 'url('+image+')';
         picture = "";
 
+        chrome.storage.sync.set({"text": author.textContent, "link": author.href});
         chrome.storage.sync.set({"cover": bodyStyle.backgroundImage});
       })
       .catch((error) => {
