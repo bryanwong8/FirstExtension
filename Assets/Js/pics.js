@@ -4,8 +4,7 @@ function getBackground(){
   let search = document.getElementById("picSubmit");
   let page = document.getElementsByTagName("body");
   let bodyStyle = window.getComputedStyle(document.body, null);
-  let night = document.getElementById("night");
-  let day = document.getElementById("day");
+  let toggle = document.getElementById("toggle");
   let author = document.getElementById("author");
 
   chrome.storage.sync.get("cover", (response) => {
@@ -24,13 +23,14 @@ function getBackground(){
     document.body.style.color = response.textColor;
   });
 
-  night.addEventListener("click", () => {
-    document.body.style.color = "black";
-    chrome.storage.sync.set({"textColor": bodyStyle.color});
-  });
+  toggle.addEventListener("click", () => {
+    text = document.body.style;
 
-  day.addEventListener("click", () => {
-    document.body.style.color = "white";
+    if(text.color == "white"){
+      text.color = "black";
+    }else{
+      text.color = "white";
+    }
     chrome.storage.sync.set({"textColor": bodyStyle.color});
   });
 
