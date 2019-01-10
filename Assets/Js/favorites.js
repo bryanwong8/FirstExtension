@@ -15,6 +15,19 @@ function getFavorite()
     let anchorEdit = document.getElementsByClassName("anchorText");
     let editIcon = document.getElementsByClassName("edit icon");
 
+    chrome.storage.sync.get("len", (response) => {
+      for(let i = 1; i < parseInt(response.len) + 1; i++){
+        let saved_title = "saved-title-" + i.toString();
+        let saved_link = "saved-link-" + i.toString();
+
+        chrome.storage.sync.get("saved_title", (response) => {
+          chrome.storage.sync.get("saved_link", (link) => {
+            createReturnFavorite(plus, favorite, response.saved_title, link.saved_link, input);
+          });
+        });
+      }
+    });
+
     favoriteClicks(plus, input, title, url);
 
     closeBtn.addEventListener("click", function(){
@@ -28,6 +41,15 @@ function getFavorite()
         createNewFavorite(plus, favorite, title, url, input);
         clickEdit(input, title, url, plus, editIcon, anchorEdit, favorite);
       }
+
+      for(let i = 1; i < plus.length + 1; i++){
+        let saved_title = "saved-title-" + i.toString();
+        let saved_link = "saved-link-" + i.toString();
+
+        chrome.storage.sync.set({saved_title: title.value, saved_link: url.value});
+      }
+
+      chrome.storage.sync.set({"len": plus.length.toString()});
     });
 }
 
@@ -64,6 +86,24 @@ function createNewFavorite(plus, favorite, title, url, input)
     favorite.append(plus[0]);
     input.style.display = "none";
   }
+}
+
+function createReturnFavorite(plus, favorite, title, url, input)
+{
+  let newDiv = document.createElement("div");
+  let newAn = document.createElement("a");
+  let edit = document.createElement("i");
+
+  edit.className = "edit icon";
+  newDiv.className = "box";
+  newAn.className = "anchorText";
+  newDiv.appendChild(newAn);
+  newDiv.appendChild(edit);
+  favorite.prepend(newDiv);
+  newAn.textContent = title;
+  newAn.href = url;
+  favorite.append(plus[0]);
+  input.style.display = "none";
 }
 
 function clickEdit(input, title, url, plus, editIcon, anchorEdit, favorite)
