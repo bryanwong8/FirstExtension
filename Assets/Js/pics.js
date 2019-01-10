@@ -58,8 +58,8 @@ function getBackground(){
         let last = response.data.results[randomNum].user.last_name;
         let home_page = response.data.results[randomNum].links.html;
 
-        author.textContent = "Photo by " + first + " " + last + " on Unsplash";
-        author.href = home_page;
+        author.textContent = "Photo by " + first + " " + last;
+        author.href = home_page + "?utm_source=First_Extension&utm_medium=referral";
 
         document.body.style.backgroundImage = 'url('+image+')';
         picture = "";

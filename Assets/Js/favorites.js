@@ -1,7 +1,7 @@
-var submitBtn = document.getElementById("submit");
-var closeBtn = document.getElementById("close");
-var editBtn = document.getElementById("edit");
-var deleteBtn = document.getElementById("delete");
+const submitBtn = document.getElementById("submit");
+const closeBtn = document.getElementById("close");
+const editBtn = document.getElementById("edit");
+const deleteBtn = document.getElementById("delete");
 
 getFavorite();
 
