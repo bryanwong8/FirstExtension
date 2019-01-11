@@ -19,11 +19,8 @@ function getFavorite()
       for(let i = 0; i < fav.len - 1; i++){
         chrome.storage.sync.get("titles", (response) => {
           chrome.storage.sync.get("links", (url) => {
-            console.log(response.titles[i]);
-            console.log(url.links[i]);
-            console.log(favorite);
-            console.log(plus);
-            createReturnFavorite(plus, favorite, response.titles[i], url.links[i]);
+            createNewFavorite(plus, favorite, response.titles[i], url.links[i], input, "future");
+            clickEdit(input, response.titles[i], url.links[i], plus, editIcon, anchorEdit, favorite);
           });
         });
       }
@@ -39,7 +36,7 @@ function getFavorite()
       if(title.value === "" || url.value === ""){
         alert("Empty field");
       }else{
-        createNewFavorite(plus, favorite, title, url, input);
+        createNewFavorite(plus, favorite, title, url, input, "present");
         clickEdit(input, title, url, plus, editIcon, anchorEdit, favorite);
 
         let titles = new Array();
@@ -71,7 +68,7 @@ function favoriteClicks(plus, input, title, url)
     });
 }
 
-function createNewFavorite(plus, favorite, title, url, input)
+function createNewFavorite(plus, favorite, title, url, input, time)
 {
   if(plus.length > 8){
     alert("Delete some favorites");
@@ -81,36 +78,22 @@ function createNewFavorite(plus, favorite, title, url, input)
     let edit = document.createElement("i");
 
     edit.className = "edit icon";
-    newDiv.className = "box";
     newAn.className = "anchorText";
+    newDiv.className = "box";
     newDiv.appendChild(newAn);
     newDiv.appendChild(edit);
     favorite.prepend(newDiv);
-    newAn.textContent = title.value;
-    newAn.href = url.value;
+
+    if(time === "present"){
+      newAn.textContent = title.value;
+      newAn.href = url.value;
+    }else if(time === "future"){
+      newAn.textContent = title;
+      newAn.href = url;
+    }
+
     favorite.append(plus[0]);
     input.style.display = "none";
-  }
-}
-
-function createReturnFavorite(plus, favorite, title, url)
-{
-  if(plus.length > 8){
-    alert("Delete some favorites");
-  }else{
-    let newDiv = document.createElement("div");
-    let newAn = document.createElement("a");
-    let edit = document.createElement("i");
-
-    edit.className = "edit icon";
-    newDiv.className = "box";
-    newAn.className = "anchorText";
-    newDiv.appendChild(newAn);
-    newDiv.appendChild(edit);
-    favorite.prepend(newDiv);
-    newAn.textContent = title;
-    newAn.href = url;
-    favorite.append(plus[0]);
   }
 }
 
