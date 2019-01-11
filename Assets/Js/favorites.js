@@ -15,14 +15,15 @@ function getFavorite()
     let anchorEdit = document.getElementsByClassName("anchorText");
     let editIcon = document.getElementsByClassName("edit icon");
 
-    chrome.storage.sync.get("len", (response) => {
-      for(let i = 1; i < parseInt(response.len) + 1; i++){
-        let saved_title = "saved-title-" + i.toString();
-        let saved_link = "saved-link-" + i.toString();
-
-        chrome.storage.sync.get("saved_title", (response) => {
-          chrome.storage.sync.get("saved_link", (link) => {
-            createReturnFavorite(plus, favorite, response.saved_title, link.saved_link, input);
+    chrome.storage.sync.get("len", (fav) => {
+      for(let i = 0; i < fav.len - 1; i++){
+        chrome.storage.sync.get("titles", (response) => {
+          chrome.storage.sync.get("links", (url) => {
+            console.log(response.titles[i]);
+            console.log(url.links[i]);
+            console.log(favorite);
+            console.log(plus);
+            createReturnFavorite(plus, favorite, response.titles[i], url.links[i]);
           });
         });
       }
@@ -40,22 +41,26 @@ function getFavorite()
       }else{
         createNewFavorite(plus, favorite, title, url, input);
         clickEdit(input, title, url, plus, editIcon, anchorEdit, favorite);
+
+        let titles = new Array();
+        let links = new Array();
+
+        for(let i = 1; i < plus.length; i++){
+          titles.push(plus[i].textContent);
+          links.push(plus[i].firstChild.href);
+        }
+
+        chrome.storage.sync.set({"titles": titles});
+        chrome.storage.sync.set({"links": links});
       }
 
-      for(let i = 1; i < plus.length + 1; i++){
-        let saved_title = "saved-title-" + i.toString();
-        let saved_link = "saved-link-" + i.toString();
-
-        chrome.storage.sync.set({saved_title: title.value, saved_link: url.value});
-      }
-
-      chrome.storage.sync.set({"len": plus.length.toString()});
+      chrome.storage.sync.set({"len": plus.length});
     });
 }
 
 function favoriteClicks(plus, input, title, url)
 {
-  let i = plus.length - 1;
+    let i = plus.length - 1;
     plus[i].addEventListener("click", function(){
       input.style.display = "block";
       submitBtn.style.display = "block";
@@ -88,22 +93,25 @@ function createNewFavorite(plus, favorite, title, url, input)
   }
 }
 
-function createReturnFavorite(plus, favorite, title, url, input)
+function createReturnFavorite(plus, favorite, title, url)
 {
-  let newDiv = document.createElement("div");
-  let newAn = document.createElement("a");
-  let edit = document.createElement("i");
+  if(plus.length > 8){
+    alert("Delete some favorites");
+  }else{
+    let newDiv = document.createElement("div");
+    let newAn = document.createElement("a");
+    let edit = document.createElement("i");
 
-  edit.className = "edit icon";
-  newDiv.className = "box";
-  newAn.className = "anchorText";
-  newDiv.appendChild(newAn);
-  newDiv.appendChild(edit);
-  favorite.prepend(newDiv);
-  newAn.textContent = title;
-  newAn.href = url;
-  favorite.append(plus[0]);
-  input.style.display = "none";
+    edit.className = "edit icon";
+    newDiv.className = "box";
+    newAn.className = "anchorText";
+    newDiv.appendChild(newAn);
+    newDiv.appendChild(edit);
+    favorite.prepend(newDiv);
+    newAn.textContent = title;
+    newAn.href = url;
+    favorite.append(plus[0]);
+  }
 }
 
 function clickEdit(input, title, url, plus, editIcon, anchorEdit, favorite)
